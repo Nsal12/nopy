@@ -14,45 +14,52 @@
 </head>
 
 <style>
-    #loginButton {
-        background-color: #2563eb;
-        color: white;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        width: 100%;
-    }
+	
+	#loginButton {
+    background-color: #2563eb; /* Tua Blue, not too dark */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-    #loginButton:hover {
-        background-color: #1d4ed8;
-        transform: scale(1.05);
-    }
+#loginButton:hover {
+    background-color: #1d4ed8; /* Slightly darker blue on hover */
+    transform: scale(1.05);
+}
+
 
     .register-btn {
         padding: 8px 16px;
-        background-color: #10b981;
+        background-color: #10b981; /* Green color */
         color: white;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 5px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        width: 100%;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .gradient-border {
+        border-width: 4px;
+        border-style: solid;
+        border-image: linear-gradient(255, 255, 0) 1;
     }
 
     .register-btn:hover {
-        background-color: #059669;
+        background-color: #059669; /* Darker green on hover */
         transform: scale(1.05);
     }
 
     .relative {
         background-color: #000000;
+        /* Removed the border style here */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .flex.items-center.border-2 {
         border-color: #3b82f6;
-        background-color: #000000;
+        background-color: #000000;  /* Set background color to black */
     }
 
     .flex.items-center.border-2:hover {
@@ -67,17 +74,19 @@
         font-size: 12px;
     }
 
+    /* Set background image for input fields */
     .bg-input {
-        background-color: #000000;
+        background-color: #000000; /* Set the background color to black */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }
 
     input {
-        background-color: #000000 !important;
+        background-color: #000000 !important;  /* Ensure black background on inputs */
     }
 
+    /* Text color for labels and input placeholders */
     .text-input {
         color: white !important;
     }
@@ -86,69 +95,67 @@
         color: white !important;
     }
 
+    /* Fixing placeholder text color */
     input::placeholder {
-        color: #a0aec0;
-    }
-
-    /* Hide login form initially */
-    #loginForm {
-        display: none;
+        color: #a0aec0; /* Light grey color for the placeholder */
     }
 </style>
 
 <body class="flex flex-col items-center justify-center h-screen bg-transparent font-serif">
     <div class="fixed inset-0 flex items-center justify-center">
         <div class="relative bg-black border-4 border-[#60a5fa] shadow-lg p-2 w-[30rem] h-auto rounded-lg animate__fadeIn">
+            
+            <!-- Logo as text inside the form container -->
             <div class="flex justify-center mb-4">
-                <h1 class="text-3xl font-bold text-white">OnePS Login</h1>
+                <h1 class="text-3xl font-bold text-white">Magical Login</h1>
             </div>
-
-            <!-- Error Message -->
             <div id="errorDiv" class="hidden flex flex-col mt-2 text-sm text-red-900 font-bold px-[5px] bg-[#2563eb] rounded">
                 <a id="errorMessage"></a>
             </div>
-
-            <!-- Buttons: Login and Create GrowID -->
-            <div class="flex flex-col gap-4 w-full">
-                <button id="loginButton" class="px-4 py-2 rounded bg-[#2563eb] text-white font-bold text-center hover:bg-[#1d4ed8] transition duration-300 ease-in-out transform hover:scale-105">
-                    Login
-                </button>
-
-                <a href="#" id="doYouNeedAccount" class="register-btn px-4 py-2 rounded bg-[#10b981] text-white font-bold text-center hover:bg-[#059669] transition duration-300 ease-in-out transform hover:scale-105">
-                    Create GrowID
-                </a>
+            <div id="accountLoggedIn" class="hidden flex flex-col items-center mt-2 text-sm text-white">
+                <a id="growId">GrowID: null</a>
+                <div class="flex justify-start text-[10px] text-white mt-2">
+                    <a id="removeSession" class="underline" href="#">Remove Session?</a>
+                </div>
             </div>
-
-            <!-- Login Form (Initially Hidden) -->
             <form method="post" action="/player/growid/login/validate" accept-charset="UTF-8" id="loginForm" class="mt-3 animate__animated animate__fadeIn">
-                <div class="mb-1">
-                    <input name="type" value="log" type="hidden" />
-                    <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
-                    <label for="loginGrowId" class="block text-white text-xs">GrowID</label>
-                    <div class="flex items-center border-2 border-[#3b82f6] rounded bg-input px-1 py-2">
-                        <i class="fas fa-user text-white mr-1 text-xs"></i>
-                        <input type="text" name="growId" id="loginGrowId" class="w-full bg-[#bfdbfe] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your growid">
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="loginPassword" class="block text-white text-xs">Password</label>
-                    <div class="flex items-center border-2 border-[#3b82f6] rounded bg-input px-1 py-2">
-                        <i class="fas fa-lock text-white mr-1 text-xs"></i>
-                        <input type="password" name="password" id="loginPassword" class="w-full bg-[#bfdbfe] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your password">
-                        <button type="button" id="toggleLogPassword" class="text-white ml-2 focus:outline-none text-xs">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
+    <div class="mb-1">
+        <input name="type" value="log" type="hidden" />
+        <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+        <label for="loginGrowId" class="block text-white text-xs">GrowID</label>
+        <div class="flex items-center border-2 border-[#3b82f6] rounded bg-input px-1 py-2">
+            <i class="fas fa-user text-white mr-1 text-xs"></i>
+            <input type="text" name="growId" id="loginGrowId" class="w-full bg-[#bfdbfe] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your growid">
+        </div>
+    </div>
+    <div class="mb-1">
+        <label for="loginPassword" class="block text-white text-xs">Password</label>
+        <div class="flex items-center border-2 border-[#3b82f6] rounded bg-input px-1 py-2">
+            <i class="fas fa-lock text-white mr-1 text-xs"></i>
+            <input type="password" name="password" id="loginPassword" class="w-full bg-[#bfdbfe] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your password">
+            <button type="button" id="toggleLogPassword" class="text-white ml-2 focus:outline-none text-xs">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+    </div>
+    <!-- Login Button above -->
+    <div class="flex justify-center mb-4">
+        <button id="loginButton" class="w-full px-4 py-2 rounded bg-[#2563eb] text-white font-bold text-center hover:bg-[#1d4ed8] transition duration-300 ease-in-out transform hover:scale-105">
+    Login
+</button>
+    </div>
 
-                <div class="flex justify-center mb-4">
-                    <button id="loginSubmitButton" class="w-full px-4 py-2 rounded bg-[#2563eb] text-white font-bold text-center hover:bg-[#1d4ed8] transition duration-300 ease-in-out transform hover:scale-105">
-                        Login
-                    </button>
-                </div>
-            </form>
+    <!-- Full Width Register Button -->
+    <div class="flex justify-center">
+        <a href="#" id="doYouNeedAccount" class="w-full register-btn px-4 py-2 rounded bg-[#10b981] text-white font-bold text-center hover:bg-[#059669] transition duration-300 ease-in-out transform hover:scale-105">
+            Create GrowID
+        </a>
+    </div>
+</form>
 
-            <form method="post" action="/player/growid/login/validate" accept-charset="UTF-8" id="registerForm" class="hidden mt-3 animate__animated animate__fadeIn">
+
+            <form method="post" action="/player/growid/login/validate" accept-charset="UTF-8" id="registerForm"
+                class="hidden mt-3 animate__animated animate__fadeIn">
                 <div class="mb-1">
                     <input name="type" value="reg" type="hidden" />
                     <input name="_token" value="{}" type="hidden" />
@@ -157,7 +164,6 @@
                     <label for="regGrowId" class="block text-white text-xs">Eclipse-ID - Registration</label>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -168,30 +174,15 @@
                 document.getElementById('loginGrowId').value = localStorage.getItem('growId');
                 document.getElementById('accountLoggedIn').classList.remove('hidden');
             }
-
             // Login variables
             const loginGrowId = document.getElementById('loginGrowId').value
             const loginPassword = document.getElementById('loginPassword').value
         });
-
-        // Toggle Login Form when Login button is clicked
-        document.getElementById('loginButton').addEventListener('click', function (event) {
-            event.preventDefault();
-
-            const loginForm = document.getElementById('loginForm');
-            loginForm.style.display = 'block';  // Show the login form when Login is clicked
-
-            // Hide the Login and Create GrowID buttons
-            document.getElementById('loginButton').style.display = 'none';
-            document.getElementById('doYouNeedAccount').style.display = 'none';
-        });
-
         document.getElementById('doYouNeedAccount').addEventListener('click', function () {
             const registerForm = document.getElementById('registerForm');
             registerForm.submit();
         });
-
-        document.getElementById('loginSubmitButton').addEventListener('click', function (event) {
+        document.getElementById('loginButton').addEventListener('click', function (event) {
             event.preventDefault();
 
             const loginForm = document.getElementById('loginForm');
@@ -210,8 +201,7 @@
                 loginForm.submit();
                 localStorage.setItem('growId', document.getElementById('loginGrowId').value);
             }
-        });
-
+        })
         document.getElementById('toggleLogPassword').addEventListener('click', function () {
             const LpasswordField = document.getElementById('loginPassword')
             const LpasswordFieldType = LpasswordField.getAttribute('type');
@@ -223,7 +213,6 @@
                 this.innerHTML = '<i class="fas fa-eye"></i>';
             }
         });
-
         document.getElementById('removeSession').addEventListener('click', function () {
             localStorage.removeItem('growId');
             document.getElementById('accountLoggedIn').classList.add('hidden');

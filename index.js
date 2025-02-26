@@ -64,6 +64,10 @@ app.all('/player/login/dashboard', function (req, res) {
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ status: "error", message: "Invalid request body" });
+    }
+    
     const { _token, growId, password } = req.body;
     if (!_token || !growId || !password) {
         return res.status(400).json({ status: "error", message: "Missing credentials" });
@@ -83,6 +87,10 @@ app.all('/player/growid/login/validate', (req, res) => {
 });
 
 app.all('/player/growid/checktoken', (req, res) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ status: "error", message: "Invalid request body" });
+    }
+    
     const { refreshToken } = req.body;
     if (!refreshToken) {
         return res.status(400).json({ status: "error", message: "Missing refresh token" });

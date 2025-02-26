@@ -53,15 +53,13 @@ app.all('/player/login/dashboard', function (req, res) {
         }
 
         if (uName[1] && uPass[1]) {
-            console.log("Redirecting to validation...");
-            return res.redirect('/player/growid/login/validate');
+            return res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
         }
     } catch (error) {
         console.error(`Error parsing request: ${error.message}`);
         return res.status(400).send("Invalid request format");
     }
 
-    console.log("Rendering dashboard...");
     res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
 
@@ -75,11 +73,11 @@ app.all('/player/growid/login/validate', (req, res) => {
         `_token=${_token}&growId=${growId}&password=${password}`,
     ).toString('base64');
 
-    res.json({
+    return res.json({
         status: "success",
         message: "Account Validated.",
         token,
-        url: "",
+        url: "/player/login/dashboard",
         accountType: "growtopia"
     });
 });
@@ -89,11 +87,11 @@ app.all('/player/growid/checktoken', (req, res) => {
     if (!refreshToken) {
         return res.status(400).json({ status: "error", message: "Missing refresh token" });
     }
-    res.json({
+    return res.json({
         status: 'success',
         message: 'Account Validated.',
         token: refreshToken,
-        url: '',
+        url: '/player/login/dashboard',
         accountType: 'growtopia',
     });
 });

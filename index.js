@@ -86,6 +86,23 @@ app.all('/player/growid/login/validate', (req, res) => {
     });
 });
 
+app.all('/player/growid/register', (req, res) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ status: "error", message: "Invalid request body" });
+    }
+    
+    const { growId, password } = req.body;
+    if (!growId || !password) {
+        return res.status(400).json({ status: "error", message: "Missing registration details" });
+    }
+
+    return res.json({
+        status: "success",
+        message: "Account Registered Successfully.",
+        url: "/player/login/dashboard"
+    });
+});
+
 app.all('/player/growid/checktoken', (req, res) => {
     if (!req.body || Object.keys(req.body).length === 0) {
         return res.status(400).json({ status: "error", message: "Invalid request body" });

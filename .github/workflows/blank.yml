@@ -17,7 +17,7 @@ jobs:
 
       - name: Run 100 VPS instances and get links
         run: |
-          for i in $(seq 1 1000); do
+          for i in $(seq 1 20); do
             echo "Starting VPS $i..."
             curl -sSf https://sshx.io/get | sh -s run &
           done

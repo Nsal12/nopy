@@ -1,0 +1,30 @@
+name: vps
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run 50 VPS instances and get links
+        run: |
+          for i in {1..50}; do
+            echo "Starting VPS $i..."
+            (
+              curl -sSf https://sshx.io/get | sh -s run > vps_$i.log
+            ) &
+          done
+          wait
+
+          echo ""
+          echo "=== SSH Links ==="
+          grep -hoE 'https://sshx\.io/s/[^\s]+' vps_*.log
